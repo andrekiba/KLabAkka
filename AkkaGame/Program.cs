@@ -69,10 +69,11 @@ namespace AkkaGame
                     playerName = action.Split(' ')[1];
                     DisplayPlayer(playerName);
                 }
-                else if (Regex.IsMatch(action, @"error\s\w+"))
+                else if (Regex.IsMatch(action, @"error\s\w+\s(0|1)"))
                 {
                     playerName = action.Split(' ')[1];
-                    ErrorPlayer(playerName);
+                    var simulate = action.Split(' ')[2] == "1";
+                    ErrorPlayer(playerName, simulate);
                 }
                 else if (Regex.IsMatch(action, @"poison\s\w+"))
                 {
@@ -93,10 +94,10 @@ namespace AkkaGame
 
         #region Methods
 
-        private static void ErrorPlayer(string playerName)
+        private static void ErrorPlayer(string playerName, bool simulate)
         {
             ActorSystem.ActorSelection($"/user/PlayerController/{playerName}")
-                  .Tell(new SimulateError());
+                  .Tell(new SimulateError(simulate));
         }
 
         private static void DisplayPlayer(string playerName)

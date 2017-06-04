@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="ActorModel\Actors\PlayerControllerActor.cs" />
     <Compile Include="ActorModel\Actors\PlayerActor.cs" />
+    <Compile Include="ActorModel\Exceptions\SimulatedException.cs" />
     <Compile Include="ActorModel\Messages\CreatePlayer.cs" />
     <Compile Include="ActorModel\Messages\DisplayStatus.cs" />
     <Compile Include="ActorModel\Messages\HealPlayer.cs" />
@@ -96,9 +97,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActorModel\Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

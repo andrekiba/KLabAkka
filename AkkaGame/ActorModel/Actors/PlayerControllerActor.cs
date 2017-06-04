@@ -1,4 +1,5 @@
 ﻿using Akka.Actor;
+using AkkaGame.ActorModel.Exceptions;
 using AkkaGame.ActorModel.Messages;
 
 namespace AkkaGame.ActorModel.Actors
@@ -16,5 +17,22 @@ namespace AkkaGame.ActorModel.Actors
         {
             Context.ActorOf(Props.Create(() => new PlayerActor(message.PlayerName, DefaultStartingHealth)), message.PlayerName);
         }
+
+        #region Strategy
+
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            //return base.SupervisorStrategy();
+
+            return new OneForOneStrategy(x =>
+            {
+                if(x is SimulatedException)
+                    return Directive.Restart;
+
+                return Directive.Stop;                
+            });
+        }
+
+        #endregion
     }
 }
