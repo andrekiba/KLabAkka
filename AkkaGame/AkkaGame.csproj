@@ -85,6 +85,7 @@
     <Compile Include="ActorModel\Actors\PlayerActor.cs" />
     <Compile Include="ActorModel\Messages\CreatePlayer.cs" />
     <Compile Include="ActorModel\Messages\DisplayStatus.cs" />
+    <Compile Include="ActorModel\Messages\HealPlayer.cs" />
     <Compile Include="ActorModel\Messages\HitPlayer.cs" />
     <Compile Include="ActorModel\Messages\SimulateError.cs" />
     <Compile Include="ColorConsole.cs" />

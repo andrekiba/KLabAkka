@@ -22,24 +22,12 @@ namespace AkkaGame
 
         public static void WriteOrange(string message)
         {
-            //var beforeColor = Console.ForegroundColor;
-
-            //Console.ForegroundColor = ConsoleColor.Green;
-
-            Console.WriteLine(message, Color.DarkOrange);
-
-           //Console.ForegroundColor = beforeColor;
+            Console.WriteLine(message, Color.DarkOrange);       
         }
 
         public static void WriteViolet(string message)
         {
-            //var beforeColor = Console.ForegroundColor;
-
-            //Console.ForegroundColor = ConsoleColor.Yellow;
-
             Console.WriteLine(message, Color.BlueViolet);
-
-            //Console.ForegroundColor = beforeColor;
         }
     }
 }

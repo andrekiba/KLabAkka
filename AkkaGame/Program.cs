@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Akka.Actor;
@@ -10,8 +11,13 @@ namespace AkkaGame
 {
     internal class Program
     {
+        #region Fields
+
         private static ActorSystem ActorSystem { get; set; }
         private static IActorRef PlayerController { get; set; }
+
+        #endregion
+
         private static void Main(string[] args)
         {
             try
@@ -39,26 +45,41 @@ namespace AkkaGame
                 if (action == null)
                     continue;
 
-                var playerName = action.Split(' ')[1];
+                string playerName;
 
-                if (action.ToLowerInvariant().Contains("create"))
+                if (Regex.IsMatch(action, @"create\s\w+"))
                 {
+                    playerName = action.Split(' ')[1];
                     CreatePlayer(playerName);
                 }
-                else if (action.ToLowerInvariant().Contains("hit"))
+                else if (Regex.IsMatch(action, @"hit\s\w+\s\d+"))
                 {
+                    playerName = action.Split(' ')[1];
                     var damage = int.Parse(action.Split(' ')[2]);
                     HitPlayer(playerName, damage);
                 }
-                else if (action.ToLowerInvariant().Contains("display"))
+                else if (Regex.IsMatch(action, @"heal\s\w+\s\d+"))
                 {
+                    playerName = action.Split(' ')[1];
+                    var care = int.Parse(action.Split(' ')[2]);
+                    HealPlayer(playerName, care);
+                }
+                else if (Regex.IsMatch(action, @"display\s\w+"))
+                {
+                    playerName = action.Split(' ')[1];
                     DisplayPlayer(playerName);
                 }
-                else if (action.ToLowerInvariant().Contains("error"))
+                else if (Regex.IsMatch(action, @"error\s\w+"))
                 {
+                    playerName = action.Split(' ')[1];
                     ErrorPlayer(playerName);
                 }
-                else if (action.ToLowerInvariant().Contains("stop"))
+                else if (Regex.IsMatch(action, @"poison\s\w+"))
+                {
+                    playerName = action.Split(' ')[1];
+                    PoisonPillPlayer(playerName);
+                }
+                else if (Regex.IsMatch(action, @"stop\s\w+"))
                 {
                     await StopSystem();
                     stop = true;
@@ -69,6 +90,8 @@ namespace AkkaGame
                 }
             } while (!stop);
         }
+
+        #region Methods
 
         private static void ErrorPlayer(string playerName)
         {
@@ -86,6 +109,18 @@ namespace AkkaGame
         {
             ActorSystem.ActorSelection($"/user/PlayerController/{playerName}")
                   .Tell(new HitPlayer(damage));
+        }
+
+        private static void PoisonPillPlayer(string playerName)
+        {
+            ActorSystem.ActorSelection($"/user/PlayerController/{playerName}")
+                  .Tell(PoisonPill.Instance);
+        }
+
+        private static void HealPlayer(string playerName, int care)
+        {
+            ActorSystem.ActorSelection($"/user/PlayerController/{playerName}")
+                  .Tell(new HealPlayer(care));
         }
 
         private static void CreatePlayer(string playerName)
@@ -108,8 +143,12 @@ namespace AkkaGame
             ColorConsole.WriteWhite("hit\t<playername>");
             ColorConsole.WriteWhite("display\t<playername>");
             ColorConsole.WriteWhite("error\t<playername>");
+            ColorConsole.WriteWhite("poison\t<playername>");
             ColorConsole.WriteWhite("stop");
             Console.WriteLine();
         }
+
+        #endregion
+
     }
 }
