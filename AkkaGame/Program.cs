@@ -80,7 +80,7 @@ namespace AkkaGame
                     playerName = action.Split(' ')[1];
                     PoisonPillPlayer(playerName);
                 }
-                else if (Regex.IsMatch(action, @"stop\s\w+"))
+                else if (action == "stop")
                 {
                     await StopSystem();
                     stop = true;
